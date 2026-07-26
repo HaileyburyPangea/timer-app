@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ethics Bowl Score Guidelines</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+    padding: 3rem;
+  }
+
+  .questions {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Wrapper for each label + its hover tooltip */
+  .question {
+    position: relative;
+  }
+
+  .question > .label {
+    font-size: 1.25rem;
+    cursor: default;
+    padding: 0.25rem 0;
+    border-bottom: 2px solid transparent;
+  }
+
+  .question:hover > .label {
+    border-bottom: 2px solid #888;
+  }
+
+  /* Tooltip panel, hidden until the question is hovered */
+  .hovermenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    width: 320px;
+    margin-top: 0.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  .question:hover .hovermenu {
+    display: block;
+  }
+
+  /* grey-solid + dark: the tooltip's color theme */
+  .grey-solid.dark {
+    background: #2e2e2e;
+    color: #f0f0f0;
+  }
+
+  .hovermenu > .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .score-explainers .row {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .score-explainers .row .score {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .score-explainers hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Presentation Team — Score Guidelines</h1>
+<p>Hover a criterion to see how each score band is defined.</p>
+
+<div class="questions" id="questions"></div>
+
+<script>
+  const scoreGuidelines = {
+    clarity: {
+      max: 5,
+      range: ["5", "4", "3", "2", "1"],
+      explainers: [
+        "Extremely clear presentation that systematically addressed the key dimensions of the question.",
+        "Reasonably clear presentation that systematically addressed most key dimensions of the question",
+        "Hard to follow the argument. Significant dimensions of the question missed (passable).",
+        "Serious logical problems or underdeveloped argument (poor)",
+        "Incoherent presentation."
+      ]
+    },
+    centrality: {
+      max: 5,
+      range: ["5", "4", "3", "2", "1"],
+      explainers: [
+        "Clearly and precisely identified central moral dimensions, and discussed these dimensions thoroughly.",
+        "Mostly identified central moral dimensions and discussed major issues.",
+        "Adequately identified and discussed some central moral dimensions (passable)",
+        "Misidentified some moral dimensions of the case and inadequately discussed (poor)",
+        "Misidentified the central moral dimensions"
+      ]
+    },
+    thoughtfulness: {
+      max: 5,
+      range: ["5", "4", "3", "2", "1"],
+      explainers: [
+        "Insightful analysis and discussion of the most significant viewpoints, including full and careful attention to opposing points of view.",
+        "Solid analysis and discussion of some different viewpoints.",
+        "Underdeveloped discussion of different viewpoints (passable).",
+        "Minimal consideration of different viewpoints (poor).",
+        "Minimal awareness of different viewpoints."
+      ]
+    },
+    commentary: {
+      max: 10,
+      range: ["10", "8-9", "6-7", "3-5", "1-2"],
+      explainers: [
+        "Especially insightful, complete, and composed commentary.",
+        "Key points excellently addressed.",
+        "Solid response to presenting team's points.",
+        "Some points made, but few insights or constructive ideas (passable).",
+        "Weak or irrelevant response or merely asking a series of questions (poor)."
+      ]
+    },
+    response: {
+      max: 15,
+      range: ["15", "12-14", "9-11", "6-8", "5-1"],
+      explainers: [
+        "Especially insightful, complete, and composed response.",
+        "Key points are excellently addressed.",
+        "Solid response to commenting team.",
+        "Some relevant points are made (passable)",
+        "Weak or irrelevant response (poor)."
+      ]
+    },
+    judgeResponse: {
+      max: 15,
+      range: ["15", "14", "12-13", "10-11", "1-10"],
+      explainers: [
+        "Especially insightful, complete, and composed response.",
+        "The most pressing points are identified and discussed.",
+        "Several of the most important points are identified and discussed.",
+        "Some relevant points are made (passable).",
+        "Weak or irrelevant response (poor)."
+      ]
+    },
+    respectful: {
+      max: 5,
+      range: ["5", "4", "3", "2", "1"],
+      explainers: [
+        "Respectfully engaged all parties in exceptionally productive and collaborative discussion.",
+        "Respectfully engaged other team's arguments and points.",
+        "Respectful of other team's argument but only marginal engagement and pursuit.",
+        "Unengaged with other team's arguments.",
+        "Combative or dismissive of other team's arguments."
+      ]
+    }
+  };
+
+  function capitalize(word) {
+    return word[0].toUpperCase() + word.slice(1);
+  }
+
+  function getLabel(key) {
+    if (key === "judgeResponse") return "Judge Q&A Response";
+    if (key === "response") return "Commentary Response";
+    return capitalize(key);
+  }
+
+  const container = document.getElementById("questions");
+
+  Object.keys(scoreGuidelines).forEach((key) => {
+    const g = scoreGuidelines[key];
+
+    const question = document.createElement("div");
+    question.className = "question";
+
+    const label = document.createElement("div");
+    label.className = "label";
+    label.textContent = getLabel(key);
+    question.appendChild(label);
+
+    const menu = document.createElement("div");
+    menu.className = "grey-solid dark hovermenu";
+
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = "Guidelines:";
+    menu.appendChild(title);
+
+    const explainers = document.createElement("div");
+    explainers.className = "score-explainers";
+
+    g.range.forEach((score, i) => {
+      const row = document.createElement("div");
+      row.className = "row";
+      row.innerHTML = `<div class="score">${score}</div><div>${g.explainers[i]}</div>`;
+      explainers.appendChild(row);
+
+      if (i + 1 !== g.range.length) {
+        explainers.appendChild(document.createElement("hr"));
+      }
+    });
+
+    menu.appendChild(explainers);
+    question.appendChild(menu);
+    container.appendChild(question);
+  });
+</script>
+
+</body>
+</html>
