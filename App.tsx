@@ -432,7 +432,7 @@ function Summary({ onRestart }: { onRestart: () => void }) {
         </h1>
         <p className="text-slate-400 text-base max-w-md mx-auto leading-relaxed">
           Both teams have presented, responded, and been questioned by the judge.
-          The debate session is complete.
+          The session is complete.
         </p>
       </div>
 
