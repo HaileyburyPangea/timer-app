@@ -100,7 +100,7 @@ function CoinToss({ onDecide }: { onDecide: (first: Team) => void }) {
     <div className="flex flex-col items-center justify-center min-h-screen gap-12 px-8">
       <div className="text-center">
         <p className="text-xs tracking-[0.25em] uppercase text-amber-400 mb-4 font-mono">
-          Ethics Debate Timer
+          Ethics Olympiad Round Timer
         </p>
         <h1 className="text-5xl font-bold text-white tracking-tight leading-none mb-3">
           Coin Toss
@@ -248,7 +248,7 @@ function RoundTimer({ phases, roundNumber, presenterTeam, commentatorTeam, onRou
       <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
         <div>
           <p className="text-xs text-slate-600 font-mono uppercase tracking-widest mb-0.5">
-            Ethics Debate Timer
+            Ethics Olympiad Round Timer
           </p>
           <p className="text-white font-bold text-lg tracking-tight">
             Round {roundNumber}{' '}
@@ -432,7 +432,7 @@ function Summary({ onRestart }: { onRestart: () => void }) {
         </h1>
         <p className="text-slate-400 text-base max-w-md mx-auto leading-relaxed">
           Both teams have presented, responded, and been questioned by the judge.
-          The debate session is complete.
+          The match is complete.
         </p>
       </div>
 
