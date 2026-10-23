@@ -170,6 +170,7 @@ function RoundTimer({ phases, roundNumber, presenterTeam, commentatorTeam, onRou
   const [secondsLeft, setSecondsLeft] = useState(phases[0].duration)
   const [running, setRunning] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const deadlineRef = useRef<number | null>(null)
 
   const phase = phases[phaseIndex]
   const isLast = phaseIndex === phases.length - 1
@@ -178,16 +179,21 @@ function RoundTimer({ phases, roundNumber, presenterTeam, commentatorTeam, onRou
   const stop = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current)
     intervalRef.current = null
+    deadlineRef.current = null
     setRunning(false)
   }, [])
 
   const start = useCallback(() => {
     if (intervalRef.current) return
-    intervalRef.current = setInterval(() => {
-      setSecondsLeft(s => s - 1)
-    }, 1000)
+    deadlineRef.current = Date.now() + secondsLeft * 1000
+    const update = () => {
+      if (deadlineRef.current !== null) {
+        setSecondsLeft(Math.ceil((deadlineRef.current - Date.now()) / 1000))
+      }
+    }
+    intervalRef.current = setInterval(update, 250)
     setRunning(true)
-  }, [])
+  }, [secondsLeft])
 
   const goToPhase = useCallback((index: number) => {
     stop()
